@@ -118,3 +118,124 @@ func main() {
 
 你可以在括号 `()` 中写入 0 个或多个函数的参数（使用逗号 `,` 分隔），每个参数的名称后面必须紧跟着该参数的类型。
 
+### main 函数
+
+启动后第一个执行的函数,每一个可执行程序所必须包含的，（如果有 init\(\) 函数则会先执行该函数）。该函数一旦返回就表示程序已成功执行并立即退出。
+
+* main 包的源代码没有包含 main 函数，则会引发构建错误 `undefined: main.main`。
+* main 函数既没有参数，也没有返回类型。为 main 函数添加了参数或者返回类型，将会引发构建错误：`func main must have no arguments and no return values results.`
+
+> 程序正常退出的代码为 0 即 `Program exited with code 0`；如果程序因为异常而被终止，则会返回非零值，如：1。这个数值可以用来测试是否成功执行一个程序。
+
+### 函数结构：
+
+* 函数里的代码（函数体）使用大括号 `{}` 括起来。
+* 左大括号 `{` 必须与方法的声明放在同一行，
+* 右大括号 `}` 需要被放在紧接着函数体的下一行。如果函数非常简短，也可以将它们放在同一行：
+
+> **Go 语言虽然看起来不使用分号作为语句的结束，但实际上这一过程是由编译器自动完成。**
+
+符合规范的函数一般写成如下的形式：
+
+```go
+func functionName(parameter_list) (return_value_list) {
+   …
+}
+```
+
+其中：
+
+* parameter\_list 的形式为 `(param1 type1, param2 type2, …)`
+* return\_value\_list 的形式为 `(ret1 type1, ret2 type2, …)`
+
+只有当某个函数需要被外部包调用的时候才使用大写字母开头，并遵循 Pascal 命名法；否则就遵循骆驼命名法，即第一个单词的首字母小写，其余单词的首字母大写。
+
+下面这一行调用了 `fmt` 包中的 `Println` 函数，可以将字符串输出到控制台，并在最后自动增加换行字符 `\n`：
+
+```text
+fmt.Println（"hello, world"）
+```
+
+使用 `fmt.Print("hello, world\n")` 可以得到相同的结果。
+
+## 注释
+
+注释不会被编译，但可以通过 godoc 来使用
+
+* 单行注释，以 `//` 开头的单行注释。
+* 多行注释，也叫块注释，均已以 `/*` 开头，并以 `*/` 结尾，且不可以嵌套使用，多行注释一般用于包的文档描述或注释成块的代码片段。
+
+每一个包应该有相关注释，在 package 语句之前的块注释将被默认认为是这个包的文档说明，其中应该提供一些相关信息并对整体功能做简要的介绍。一个包可以分散在多个文件中，但是只需要在其中一个进行注释说明即可。当开发人员需要了解包的一些情况时，自然会用 godoc 来显示包的文档说明，在首行的简要注释之后可以用成段的注释来进行更详细的说明，而不必拥挤在一起。另外，在多段注释之间应以空行分隔加以区分。
+
+示例：
+
+```go
+// Package superman implements methods for saving the world.
+//
+// Experience has shown that a small number of procedures can prove
+// helpful when attempting to save the world.
+package superman
+```
+
+几乎所有全局作用域的类型、常量、变量、函数和被导出的对象都应该有一个合理的注释。如果注释出现在函数前面，例如函数 Abcd，则要以 `"Abcd..."` 作为开头，称为文档注释。
+
+示例：
+
+```go
+// enterOrbit causes Superman to fly into low Earth orbit, a position
+// that presents several possibilities for planet salvation.
+func enterOrbit() error {
+   ...
+}
+```
+
+godoc 工具会收集这些注释并产生一个技术文档。
+
+## 类型
+
+变量（或常量）包含数据，这些数据可以有不同的数据类型，简称类型。使用 var 声明的变量的值会自动初始化为该类型的零值。类型定义了某个变量的值的集合与可对其进行操作的集合。
+
+类型可以是基本类型，如：int、float、bool、string；结构化的（复合的），如：struct、array、slice、map、channel；只描述类型的行为的，如：interface。
+
+结构化的类型没有真正的值，它使用 nil 作为默认值。
+
+> Go 语言中不存在类型继承。
+
+
+
+函数也可以是一个确定的类型，就是以函数作为返回类型。这种类型的声明要写在函数名和可选的参数列表之后，例如：
+
+```text
+func FunctionName (a typea, b typeb) typeFunc
+```
+
+你必须在函数体中的某处返回类型为 typeFunc 的变量 var：`return var`
+
+一个函数可以拥有多返回值，返回类型之间需要使用逗号分割，并使用小括号 `()` 将它们括起来，如：
+
+```go
+func FunctionName (a typea, b typeb) (t1 type1, t2 type2){
+    // 省略非关键代码。。。
+    // 其中， var1为type1类型， var2为type2类型
+    return var1,var2
+}
+```
+
+这种多返回值一般用于判断某个函数是否执行成功（true/false）或与其它返回值一同返回错误消息。
+
+使用 type 关键字可以定义你自己的类型，但是也可以定义一个已经存在的类型的别名，如：
+
+```text
+type IZ int
+```
+
+如果你有多个类型需要定义，可以使用因式分解关键字的方式，例如：
+
+```text
+type (
+   IZ int
+   FZ float64
+   STR string
+)
+```
+
