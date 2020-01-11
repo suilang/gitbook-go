@@ -221,7 +221,7 @@ func IntFromFloat64(x float64) int {
 
 Go 拥有以下复数类型：
 
-```text
+```go
 complex64 (32 位实数和虚数)
 complex128 (64 位实数和虚数)
 ```
@@ -238,7 +238,7 @@ fmt.Printf("The value is: %v", c1)
 
 如果 `re` 和 `im` 的类型均为 float32，那么类型为 complex64 的复数 c 可以通过以下方式来获得：
 
-```text
+```go
 c = complex(re, im)
 ```
 
